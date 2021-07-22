@@ -404,6 +404,10 @@ Examples:
   "Base directory for Hugo.
 Set either this value, or the HUGO_BASE_DIR global property for export.")
 
+(defvar-local org-hugo-baseURL nil
+  "Base URL for Hugo, usually configured in config.toml.
+Set either this value, or the HUGO_BASE_URL global property for export.")
+
 (defcustom org-hugo-section "posts"
   "Default section for Hugo posts.
 
@@ -793,6 +797,7 @@ newer."
                    (:hugo-section "HUGO_SECTION" nil org-hugo-section)
                    (:hugo-bundle "HUGO_BUNDLE" nil nil)
                    (:hugo-base-dir "HUGO_BASE_DIR" nil org-hugo-base-dir)
+                   (:hugo-baseURL "HUGO_BASE_URL" nil org-hugo-baseURL)
                    (:hugo-code-fence "HUGO_CODE_FENCE" nil t) ;Prefer to generate triple-backquoted Markdown code blocks by default.
                    (:hugo-use-code-for-kbd "HUGO_USE_CODE_FOR_KBD" nil org-hugo-use-code-for-kbd)
                    (:hugo-prefer-hyphen-in-tags "HUGO_PREFER_HYPHEN_IN_TAGS" nil org-hugo-prefer-hyphen-in-tags)
@@ -2499,7 +2504,7 @@ INFO is a plist used as a communication channel."
                             ;; as those paths won't exist at the site
                             ;; base URL.
                             file-name-relative-path
-                          (concat "/" file-name-relative-path))))))
+                          (concat (plist-get info :hugo-baseURL) "/" file-name-relative-path))))))
       (setq ret path))
     ;; (message "[ox-hugo DBG attch rewrite] returned path: %s" ret)
     ret))
@@ -3675,6 +3680,7 @@ are \"toml\" and \"yaml\"."
                      "HUGO_SECTION*"
                      "HUGO_BUNDLE"
                      "HUGO_BASE_DIR"
+                     "HUGO_BASE_URL"
                      "HUGO_CODE_FENCE"
                      "HUGO_MENU"
                      "HUGO_CUSTOM_FRONT_MATTER"
